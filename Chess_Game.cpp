@@ -93,7 +93,10 @@ public:
         static sf::Font font;
         font.loadFromFile("assets/DejaVuSans.ttf");
 
-        sf::RectangleShape square(sf::Vector2f(tileSize, tileSize));
+        sf::RectangleShape square(sf::Vector2f(tileSize -1, tileSize -1));
+        sf::CircleShape circle(float(tileSize/3), 4);
+
+        circle.setFillColor(sf::Color(128, 128, 128));
 
         for (int y = 0; y < tiles; ++y) {
             for (int x = 0; x < tiles; ++x) {
@@ -101,22 +104,28 @@ public:
 
                 if (cell.get_color_cell() == Color::White) {
                     square.setFillColor(sf::Color(240, 217, 181));
-                }
-                else if (cell.get_color_cell() == Color::Black) {
-                    square.setFillColor(sf::Color(181, 136, 99));
-                }
-                else if (cell.get_color_cell() == Color::Green) {
-                    square.setFillColor(sf::Color(167, 255, 167));
-                }
-                else if (cell.get_color_cell() == Color::Red) {
-                    square.setFillColor(sf::Color(200, 100, 100));
-                }
-                else {
-                    square.setFillColor(sf::Color::Magenta);
+
+                    square.setPosition(x * tileSize, (7 - y) * tileSize);
+                    window.draw(square); // отрисовка клетки
                 }
 
-                square.setPosition(x * tileSize, (7 - y) * tileSize);
-                window.draw(square); // отрисовка клетки
+                else if (cell.get_color_cell() == Color::Black) {
+                    square.setFillColor(sf::Color(181, 136, 99));
+
+                    square.setPosition(x * tileSize, (7 - y) * tileSize);
+                    window.draw(square); // отрисовка клетки
+                }
+
+                else if (cell.get_color_cell() == Color::Green) {
+                    circle.setFillColor(sf::Color(0, 128, 0, 50));
+                    circle.setPosition(x * tileSize + 14, (7 - y) * tileSize + 14);
+                    window.draw(circle);
+                }
+                else if (cell.get_color_cell() == Color::Red) {
+                    square.setFillColor(sf::Color(200, 100, 100, 50));
+                    square.setPosition(x * tileSize, (7 - y) * tileSize);
+                    window.draw(square);
+                }
 
                 // Отрисовка фигуры
                 if (!cell.is_empty && cell.piece) {
@@ -195,7 +204,7 @@ public:
         this->textures = getTextures();
 
         sf::RenderWindow window(sf::VideoMode(640, 640), L"Шахматы", sf::Style::Default);
-        window.setFramerateLimit(5);
+        window.setFramerateLimit(60);
 
         while (window.isOpen()) {
             sf::Event event;
@@ -209,10 +218,20 @@ public:
                 }
                 
 
-                if (this->board.mate) {
-                    draw_board(window, event);
-                    break;
+                bool check = false;
+                std::vector<Info_Move> possible_moves_with_check;
+
+                if (board.is_check(this->color_current_player)) {
+                    check = true;
+                    possible_moves_with_check = board.is_mate(color_current_player);
+
+                    if (board.mate) {
+                        draw_board(window, event);
+                        break;
+                    }
                 }
+
+                
 
                 if (first_click){
                     std::vector<Coordinates> possible_moves;
@@ -225,10 +244,35 @@ public:
                     }
 
                     // Отрисовка ходов (1 клик)
-                    Cell& cell = this->board.matrix_pieces[cords_click_1->y][cords_click_1->x];
+                    Cell& cell_began_piece = this->board.matrix_pieces[cords_click_1->y][cords_click_1->x];
 
-                    if (!cell.is_empty && (cell.piece->get_color_piece() == color_current_player)) {
-                        possible_moves = board.matrix_pieces[cords_click_1->y][cords_click_1->x].piece->get_possible_moves(board);
+                    if (!cell_began_piece.is_empty && (cell_began_piece.piece->get_color_piece() == color_current_player)) {
+
+                        if (!check) {
+
+                            for (Coordinates cord_move_piece : board.matrix_pieces[cords_click_1->y][cords_click_1->x].piece->get_possible_moves(board)) {
+                                if (board.is_current_move(cell_began_piece.get_coordinates_cell(), cord_move_piece)) {
+                                    possible_moves.push_back(cord_move_piece);
+                                }
+                            }
+                        }
+
+                        if (check) {
+
+                            std::vector<Coordinates> possible_moves_piece = board.matrix_pieces[cords_click_1->y][cords_click_1->x].piece->get_possible_moves(board);
+
+                            for (Coordinates cord_move_piece : possible_moves_piece) {
+
+                                for (Info_Move possible_move : possible_moves_with_check) {
+        
+                                    if ((cord_move_piece.x == possible_move.move_pos.x) && (cord_move_piece.y == possible_move.move_pos.y)&&
+                                        (cell_began_piece.get_coordinates_cell().x == possible_move.began_pos.x) && (cell_began_piece.get_coordinates_cell().y == possible_move.began_pos.y))
+                                    {
+                                        possible_moves.push_back(cord_move_piece);
+                                    }
+                                }
+                            }
+                        }
 
                         for (Coordinates possible_cord : possible_moves) {
 
@@ -264,7 +308,10 @@ public:
                     }
 
                     if (is_valid_move(cord_click_2)) {
-                        make_move(cord_click_2);
+                        this->board.move_piece(cords_select_piece, Coordinates(cord_click_2->y, cord_click_2->x));
+                        this->change_player();
+                        this->first_click = true;
+
                         clear_render_cells();
                     }
                     else {
@@ -280,49 +327,6 @@ public:
         }
     };
 
-
-    void make_move(std::optional<Coordinates> cord_move) {
-
-        if (board.matrix_pieces[this->cords_select_piece.y][this->cords_select_piece.x].piece->get_type() == Piece_Type::King) {
-
-            if (board.matrix_pieces[cords_select_piece.y][cords_select_piece.x].piece->get_color_piece() == Color::White) {
-                this->board.cords_white_king = Coordinates(cord_move->y, cord_move->x);
-            }
-            else {
-                this->board.cords_black_king = Coordinates(cord_move->y, cord_move->x);
-            }
-        }
-
-        // Ход на пустую клетку
-        if (board.matrix_pieces[cord_move->y][cord_move->x].is_empty) {
-
-            Color color = board.matrix_pieces[this->cords_select_piece.y][this->cords_select_piece.x].piece->get_color_piece();
-            Piece_Type type_piece = board.matrix_pieces[this->cords_select_piece.y][this->cords_select_piece.x].piece->get_type();
-
-            board.matrix_pieces[this->cords_select_piece.y][this->cords_select_piece.x].del_piece();
-
-            board.matrix_pieces[cord_move->y][cord_move->x].set_piece(type_piece, color);
-        }
-        // Ход на вражескую фигуру(Т.к возможные ходы предобработатны условие того что клетка не пуста достаточно)
-        else if (!board.matrix_pieces[cord_move->y][cord_move->x].is_empty) {
-
-            Color color = board.matrix_pieces[this->cords_select_piece.y][this->cords_select_piece.x].piece->get_color_piece();
-            Piece_Type type_piece = board.matrix_pieces[this->cords_select_piece.y][this->cords_select_piece.x].piece->get_type();
-
-            board.matrix_pieces[this->cords_select_piece.y][this->cords_select_piece.x].del_piece(); // Удаляем выбранную фигуру
-            board.matrix_pieces[cord_move->y][cord_move->x].del_piece(); // Удаляем  фигуру на которую будет ход
-
-            board.matrix_pieces[cord_move->y][cord_move->x].set_piece(type_piece, color);
-        }
-
-        if (board.is_check(this->color_current_player)) { // Если игрок походил но при этом его король всё ещё находится под шахом, то он проиграл
-            board.mate = true;
-            return;
-        }
-        // Смена игрока
-        this->change_player();
-        this->first_click = true;
-    }
 
     void change_player() {
         if (color_current_player == Color::White) {

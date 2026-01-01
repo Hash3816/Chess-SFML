@@ -1,6 +1,7 @@
 #include "chess_board.h"
 #include "cell.h"
 #include "pieces.h"
+#include "info_move.h"
 
 // Конструктор: создаём матрицу с базовой расстановкой фигур, и сохраняем начальные координаты королей
 Chess_Board::Chess_Board() {
@@ -74,6 +75,46 @@ void Chess_Board::set_default() {
     this->cords_white_king = Coordinates(0, 4);
     this->cords_black_king = Coordinates(7, 4);
     this->mate = false;
+}
+
+void Chess_Board::move_piece(Coordinates began_pos, Coordinates move_pos) { // В случае если есть фигура на клетке движения, она удаляется
+    Piece_Type type_piece = matrix_pieces[began_pos.y][began_pos.x].piece->get_type();
+    Color color_piece = matrix_pieces[began_pos.y][began_pos.x].piece->get_color_piece();
+
+    if (this->matrix_pieces[move_pos.y][move_pos.x].is_empty) {
+        matrix_pieces[began_pos.y][began_pos.x].del_piece();
+        matrix_pieces[move_pos.y][move_pos.x].set_piece(type_piece, color_piece);
+
+        if (type_piece == Piece_Type::King) {
+
+            if (color_piece == Color::White) {
+                this->cords_white_king = move_pos;
+            }
+
+            else {
+                this->cords_black_king = move_pos;
+            }
+        }
+
+    }
+
+    else if (!this->matrix_pieces[move_pos.y][move_pos.x].is_empty) {
+        this->matrix_pieces[move_pos.y][move_pos.x].del_piece();
+        this->matrix_pieces[began_pos.y][began_pos.x].del_piece();
+        this->matrix_pieces[move_pos.y][move_pos.x].set_piece(type_piece, color_piece);
+
+        if (type_piece == Piece_Type::King) {
+
+            if (color_piece == Color::White) {
+
+                this->cords_white_king = move_pos;
+            }
+
+            else {
+                this->cords_black_king = move_pos;
+            }
+        }
+    }
 }
 
 bool Chess_Board::is_check(Color color_current_player) {
@@ -406,4 +447,98 @@ bool Chess_Board::is_check(Color color_current_player) {
     }
 
     return false; // Шах не найден
+}
+
+std::vector<Info_Move> Chess_Board::is_mate(Color color_current_player) { // Вызывается только во время шаха
+    bool mate = true;
+    std::vector<Info_Move> possible_moves_with_check;
+
+    for (int y = 0; y <= 7; y++) {
+        for (int x = 0; x <= 7; x++) {
+            Piece_Type type_piece;
+
+            if (!this->matrix_pieces[y][x].is_empty && this->matrix_pieces[y][x].piece->get_color_piece() == color_current_player) {
+
+                type_piece = this->matrix_pieces[y][x].piece->get_type();
+
+                auto possible_moves_piece = this->matrix_pieces[y][x].piece->get_possible_moves(*this);
+
+                for (Coordinates cord_move : possible_moves_piece) {
+
+                    if (this->matrix_pieces[cord_move.y][cord_move.x].is_empty) {
+                        move_piece(Coordinates(y, x), cord_move);
+
+                        if (!is_check(color_current_player)) {
+                            move_piece(cord_move, Coordinates(y, x));
+
+                            possible_moves_with_check.push_back(Info_Move(Coordinates(y, x), Coordinates(cord_move.y, cord_move.x)));
+
+                            mate = false;
+                        }
+                        else {
+                            move_piece(cord_move, Coordinates(y, x));
+                        }
+                    }
+
+                    else if (!this->matrix_pieces[cord_move.y][cord_move.x].is_empty) {
+                        Piece_Type type_killed_piece = this->matrix_pieces[cord_move.y][cord_move.x].piece->get_type();
+                        Color color_killed_piece = this->matrix_pieces[cord_move.y][cord_move.x].piece->get_color_piece();
+
+                        move_piece(Coordinates(y, x), cord_move);
+
+                        if (!is_check(color_current_player)) {
+
+                            move_piece(cord_move, Coordinates(y, x));
+                            this->matrix_pieces[cord_move.y][cord_move.x].set_piece(type_killed_piece, color_killed_piece);
+
+                            possible_moves_with_check.push_back(Info_Move(Coordinates(y, x), Coordinates(cord_move.y, cord_move.x)));
+
+                            mate = false;
+                        }
+
+                        else {
+                            move_piece(cord_move, Coordinates(y, x));
+                            this->matrix_pieces[cord_move.y][cord_move.x].set_piece(type_killed_piece, color_killed_piece);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    this->mate = mate;
+    return possible_moves_with_check; 
+}
+
+bool Chess_Board::is_current_move(Coordinates began_pos, Coordinates move_pos){
+    Color color_player = matrix_pieces[began_pos.y][began_pos.x].piece->get_color_piece();
+
+    if (this->matrix_pieces[move_pos.y][move_pos.x].is_empty) {
+        move_piece(began_pos, move_pos);
+
+        if (is_check(color_player)) {
+            move_piece(move_pos, began_pos);
+
+            return false;
+        }
+        move_piece(move_pos, began_pos);
+        return true;
+    }
+
+    else if (!this->matrix_pieces[move_pos.y][move_pos.x].is_empty) {
+        Piece_Type type_killed_piece = this->matrix_pieces[move_pos.y][move_pos.x].piece->get_type();
+        Color color_killed_piece = this->matrix_pieces[move_pos.y][move_pos.x].piece->get_color_piece();
+
+        move_piece(began_pos, move_pos);
+
+        if (is_check(color_player)) {
+            move_piece(move_pos, began_pos);
+            matrix_pieces[move_pos.y][move_pos.x].set_piece(type_killed_piece, color_killed_piece);
+            return false;
+        }
+
+        move_piece(move_pos, began_pos);
+        matrix_pieces[move_pos.y][move_pos.x].set_piece(type_killed_piece, color_killed_piece);
+        return true;
+    }
 }
