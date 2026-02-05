@@ -93,7 +93,10 @@ public:
         static sf::Font font;
         font.loadFromFile("assets/DejaVuSans.ttf");
 
-        sf::RectangleShape square(sf::Vector2f(tileSize -1, tileSize -1));
+        sf::RectangleShape square(sf::Vector2f(tileSize-1, tileSize-1));
+        square.setOutlineThickness(1.0f);//Чёрные границы разделяющие клетки
+        square.setOutlineColor(sf::Color::Black);
+
         sf::CircleShape circle(float(tileSize/3), 4);
 
         circle.setFillColor(sf::Color(128, 128, 128));
@@ -195,7 +198,90 @@ public:
             }
         }
     }
+    void draw_menu_and_select_type_piece(Coordinates coord_pawn,sf::RenderWindow& window, sf::Event& event) {
+        sf::RectangleShape background(sf::Vector2f(320,90));
+        background.setPosition(162.5, 275);
+        background.setFillColor(sf::Color(50, 50, 50, 200));
 
+        sf::RectangleShape knight_button(sf::Vector2f(80, 80));
+        sf::RectangleShape bishop_button(sf::Vector2f(80, 80));
+        sf::RectangleShape rook_button(sf::Vector2f(80, 80));
+        sf::RectangleShape queen_button(sf::Vector2f(80, 80));
+
+        knight_button.setPosition(160, 280);
+        bishop_button.setPosition(240, 280);
+        rook_button.setPosition(320, 280);
+        queen_button.setPosition(400, 280);
+
+        sf::FloatRect knight_button_bounds = knight_button.getGlobalBounds();
+        sf::FloatRect bishop_button_bounds = bishop_button.getGlobalBounds();
+        sf::FloatRect rook_button_bounds = rook_button.getGlobalBounds();
+        sf::FloatRect king_button_bounds = queen_button.getGlobalBounds();
+
+        knight_button.setFillColor(sf::Color::White);
+        bishop_button.setFillColor(sf::Color::White);
+        rook_button.setFillColor(sf::Color::White);
+        queen_button.setFillColor(sf::Color::White);
+
+        sf::Texture texture_knight = this->textures[textureName(Piece_Type::Knight, this->color_current_player)];
+        sf::Texture texture_bishop = this->textures[textureName(Piece_Type::Bishop, this->color_current_player)];
+        sf::Texture texture_rook = this->textures[textureName(Piece_Type::Rook, this->color_current_player)];
+        sf::Texture texture_queen = this->textures[textureName(Piece_Type::Queen, this->color_current_player)];
+
+        knight_button.setTexture(&texture_knight, true);
+        bishop_button.setTexture(&texture_bishop, true);
+        rook_button.setTexture(&texture_rook, true);
+        queen_button.setTexture(&texture_queen, true);
+
+        window.draw(background);
+        window.draw(knight_button);
+        window.draw(bishop_button);
+        window.draw(rook_button);
+        window.draw(queen_button);
+
+        window.display();
+        window.clear();
+  
+        while (window.isOpen()) {//Ожидание клика по нужной области
+            while (window.pollEvent(event)) {
+                if (event.type == sf::Event::Closed) window.close();
+
+                if (event.key.code != sf::Mouse::Button::Left) {
+                    continue;
+                }
+
+                auto cords_click_mouse_x = event.mouseButton.x;
+                auto cords_click_mouse_y = event.mouseButton.y;
+
+                
+                
+                if (knight_button_bounds.contains(cords_click_mouse_x, cords_click_mouse_y)) {
+                    this->board.matrix_pieces[coord_pawn.y][coord_pawn.x].del_piece();
+                    this->board.matrix_pieces[coord_pawn.y][coord_pawn.x].set_piece(Piece_Type::Knight,this->color_current_player);
+                    return;
+                }
+
+                else if (bishop_button_bounds.contains(cords_click_mouse_x, cords_click_mouse_y)) {
+                    this->board.matrix_pieces[coord_pawn.y][coord_pawn.x].del_piece();
+                    this->board.matrix_pieces[coord_pawn.y][coord_pawn.x].set_piece(Piece_Type::Bishop, this->color_current_player);
+                    return;
+                }
+
+                else if (rook_button_bounds.contains(cords_click_mouse_x, cords_click_mouse_y)) {
+                    this->board.matrix_pieces[coord_pawn.y][coord_pawn.x].del_piece();
+                    this->board.matrix_pieces[coord_pawn.y][coord_pawn.x].set_piece(Piece_Type::Rook, this->color_current_player);
+                    return;
+                }
+                else if (king_button_bounds.contains(cords_click_mouse_x, cords_click_mouse_y)) {
+                    this->board.matrix_pieces[coord_pawn.y][coord_pawn.x].del_piece();
+                    this->board.matrix_pieces[coord_pawn.y][coord_pawn.x].set_piece(Piece_Type::Queen, this->color_current_player);
+                    return;
+                }
+            }
+        }
+    }
+
+  
 
     void start_Game() {
         this->color_current_player = Color::White;
@@ -309,8 +395,15 @@ public:
 
                     if (is_valid_move(cord_click_2)) {
                         this->board.move_piece(cords_select_piece, Coordinates(cord_click_2->y, cord_click_2->x));
-                        this->change_player();
                         this->first_click = true;
+
+                        if (this->board.matrix_pieces[cord_click_2->y][cord_click_2->x].piece->get_type() == Piece_Type::Pawn) {
+                            if ((this->color_current_player == Color::White && cord_click_2->y == 7) || (this->color_current_player == Color::Black && cord_click_2->y == 0)){
+                                draw_menu_and_select_type_piece(Coordinates(cord_click_2->y, cord_click_2->x), window, event);
+                            }
+                        }
+
+                        this->change_player();
 
                         clear_render_cells();
                     }
@@ -363,8 +456,8 @@ public:
 
 int main()
 {
-    HWND hConsole = GetConsoleWindow();//Если компилятор старый заменить на GetForegroundWindow()
-    ShowWindow(hConsole, SW_HIDE);//собственно прячем оконо консоли
+    HWND hConsole = GetConsoleWindow();
+    ShowWindow(hConsole, SW_HIDE);
 
     Game chess_game;
     chess_game.start_Game();
