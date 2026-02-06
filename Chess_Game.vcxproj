@@ -134,6 +134,7 @@
     <ClCompile Include="pieces.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="castling_info.h" />
     <ClInclude Include="cell.h" />
     <ClInclude Include="chess_board.h" />
     <ClInclude Include="colors.h" />

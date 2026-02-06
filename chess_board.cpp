@@ -81,20 +81,20 @@ void Chess_Board::move_piece(Coordinates began_pos, Coordinates move_pos) { // ¬
     Piece_Type type_piece = matrix_pieces[began_pos.y][began_pos.x].piece->get_type();
     Color color_piece = matrix_pieces[began_pos.y][began_pos.x].piece->get_color_piece();
 
+    if (type_piece == Piece_Type::King) {
+
+        if (color_piece == Color::White) {
+            this->cords_white_king = move_pos;
+        }
+
+        else {
+            this->cords_black_king = move_pos;
+        }
+    }
+
     if (this->matrix_pieces[move_pos.y][move_pos.x].is_empty) {
         matrix_pieces[began_pos.y][began_pos.x].del_piece();
         matrix_pieces[move_pos.y][move_pos.x].set_piece(type_piece, color_piece);
-
-        if (type_piece == Piece_Type::King) {
-
-            if (color_piece == Color::White) {
-                this->cords_white_king = move_pos;
-            }
-
-            else {
-                this->cords_black_king = move_pos;
-            }
-        }
 
     }
 
@@ -102,18 +102,6 @@ void Chess_Board::move_piece(Coordinates began_pos, Coordinates move_pos) { // ¬
         this->matrix_pieces[move_pos.y][move_pos.x].del_piece();
         this->matrix_pieces[began_pos.y][began_pos.x].del_piece();
         this->matrix_pieces[move_pos.y][move_pos.x].set_piece(type_piece, color_piece);
-
-        if (type_piece == Piece_Type::King) {
-
-            if (color_piece == Color::White) {
-
-                this->cords_white_king = move_pos;
-            }
-
-            else {
-                this->cords_black_king = move_pos;
-            }
-        }
     }
 }
 
@@ -541,4 +529,98 @@ bool Chess_Board::is_current_move(Coordinates began_pos, Coordinates move_pos){
         matrix_pieces[move_pos.y][move_pos.x].set_piece(type_killed_piece, color_killed_piece);
         return true;
     }
+}
+
+void Chess_Board::update_state_castling(Coordinates cords_select_piece){
+    Color color_piece = this->matrix_pieces[cords_select_piece.y][cords_select_piece.x].piece->get_color_piece();
+    Piece_Type type_piece = this->matrix_pieces[cords_select_piece.y][cords_select_piece.x].piece->get_type();
+
+    if (type_piece == Piece_Type::King) {
+        if (color_piece == Color::White) {
+            this->castling_state.white_king_move = true;
+        }
+        
+        else if (color_piece == Color::Black) {
+            this->castling_state.black_king_move = true;
+        }
+    }
+
+    else if (type_piece == Piece_Type::Rook && color_piece == Color::White) {
+        if (cords_select_piece.x == 0) {
+            this->castling_state.left_white_rook_move = true;
+        }
+
+        else if (cords_select_piece.x == 7) {
+            this->castling_state.right_white_rook_move = true;
+        }
+    }
+
+    else if (type_piece == Piece_Type::Rook && color_piece == Color::Black) {
+            if (cords_select_piece.x == 0) {
+                this->castling_state.left_black_rook_move = true;
+            }
+
+            else if (cords_select_piece.x == 7) {
+                this->castling_state.right_black_rook_move = true;
+            }
+    }
+}
+
+bool Chess_Board::make_castling(Type_Castling type_castling, Color color_current_player) { //true - если рокировка произведена, false если нет
+    if (type_castling == Type_Castling::Long && color_current_player == Color::White) {
+        move_piece(Coordinates(0, 4), Coordinates(0, 2));
+        move_piece(Coordinates(0, 0), Coordinates(0, 3));
+
+        if (this->is_check(color_current_player)) {//≈сли после хода игрок попадает под мат, возращаем прошлое состо€ние доски обратно
+            move_piece(Coordinates(0, 2), Coordinates(0, 4));
+            move_piece(Coordinates(0, 3), Coordinates(0, 0));
+            return false;
+        }
+
+        this->castling_state.white_king_move = true;
+        this->castling_state.left_white_rook_move = true;
+    }
+
+    else if (type_castling == Type_Castling::Short && color_current_player == Color::White) {
+        move_piece(Coordinates(0, 4), Coordinates(0, 6));
+        move_piece(Coordinates(0, 7), Coordinates(0, 5));
+
+        if (this->is_check(color_current_player)) {
+            move_piece(Coordinates(0, 6), Coordinates(0, 4));
+            move_piece(Coordinates(0, 5), Coordinates(0, 7));
+            return false;
+        }
+
+        this->castling_state.white_king_move = true;
+        this->castling_state.right_white_rook_move = true;
+    }
+
+    else if (type_castling == Type_Castling::Long && color_current_player == Color::Black) {
+        move_piece(Coordinates(7, 4), Coordinates(7, 2));
+        move_piece(Coordinates(7, 0), Coordinates(7, 3));
+
+        if (this->is_check(color_current_player)) {
+            move_piece(Coordinates(7, 2), Coordinates(7, 4));
+            move_piece(Coordinates(7, 3), Coordinates(7, 0));
+            return false;
+        }
+
+        this->castling_state.black_king_move = true;
+        this->castling_state.left_black_rook_move = true;
+    }
+
+    else if (type_castling == Type_Castling::Short && color_current_player == Color::Black) {
+        move_piece(Coordinates(7, 4), Coordinates(7, 6));
+        move_piece(Coordinates(7, 7), Coordinates(7, 5));
+
+        if (this->is_check(color_current_player)) {
+            move_piece(Coordinates(7, 6), Coordinates(7, 4));
+            move_piece(Coordinates(7, 5), Coordinates(7, 7));
+            return false;
+        }
+
+        this->castling_state.black_king_move = true;
+        this->castling_state.right_black_rook_move = true;
+    }
+    return true;
 }

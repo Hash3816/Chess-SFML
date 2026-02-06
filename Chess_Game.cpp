@@ -4,6 +4,7 @@
 #include<optional>
 #include <unordered_map>
 #include "chess_board.h"
+#include "castling_info.h"
 
 
 static std::string textureName(Piece_Type type, Color color) {
@@ -54,6 +55,7 @@ private:
     Color color_current_player;
 
     bool first_click;
+    std::unordered_map<Type_Castling, sf::FloatRect> lower_menu_buttons_bounds;
 
     Coordinates cords_select_piece;
     std::vector<Coordinates> rendering_coordinates;
@@ -61,14 +63,12 @@ private:
     Chess_Board board;
 
 public:
-    std::timespec time_last_click;
     std::unordered_map<std::string, sf::Texture> textures;
-
-
-    std::optional<Coordinates> getClickedCell(sf::Event& event, sf::Window& window, int cellSize)
+    std::optional<Coordinates> getClicked(sf::Event& event, sf::RenderWindow& window, int cellSize)
     {
       auto cords_click_mouse_x = event.mouseButton.x;
       auto cords_click_mouse_y = event.mouseButton.y;
+
 
       int x = cords_click_mouse_x / cellSize;
       int y = (640 - cords_click_mouse_y) / cellSize;
@@ -77,21 +77,118 @@ public:
 
       }
 
-      if (x >= 0 && x < 8 && y >= 0 && y < 8) {
-          return Coordinates(y, x);
+      if (this->lower_menu_buttons_bounds[Type_Castling::Long].contains(cords_click_mouse_x, cords_click_mouse_y)) {
+          if (this->board.is_check(this->color_current_player)) {
+              window.pollEvent(event);
+
+              return std::nullopt;
+          }
+
+          if (this->color_current_player == Color::White && !this->board.castling_state.white_king_move && !this->board.castling_state.left_white_rook_move) {
+
+              if (this->board.matrix_pieces[0][1].is_empty && this->board.matrix_pieces[0][2].is_empty && this->board.matrix_pieces[0][3].is_empty) {
+
+                  bool status = this->board.make_castling(Type_Castling::Long, this->color_current_player);
+                  if (!status) {
+                   window.pollEvent(event);
+                   return std::nullopt;
+                  }
+
+                  this->draw_board(window, event);
+                  window.display();
+                  window.pollEvent(event);
+
+                  this->change_player();
+
+                  return std::nullopt;
+              }
+          }
+
+          else if (this->color_current_player == Color::Black && !this->board.castling_state.black_king_move && !this->board.castling_state.left_black_rook_move) {
+
+              if (this->board.matrix_pieces[7][1].is_empty && this->board.matrix_pieces[7][2].is_empty && this->board.matrix_pieces[7][3].is_empty) {
+
+                  bool status = this->board.make_castling(Type_Castling::Long, this->color_current_player);
+                  if (!status) {
+                      window.pollEvent(event);
+                      return std::nullopt;
+                  }
+
+                  this->draw_board(window, event);
+                  window.display();
+                  window.pollEvent(event);
+
+                  this->change_player();
+
+                  return std::nullopt;
+              }
+          }
+
+          window.pollEvent(event);
+          return std::nullopt;
       }
+
+      if (this->lower_menu_buttons_bounds[Type_Castling::Short].contains(cords_click_mouse_x, cords_click_mouse_y)) {
+
+          if (this->color_current_player == Color::White && !this->board.castling_state.white_king_move && !this->board.castling_state.right_white_rook_move) {
+
+              if (this->board.matrix_pieces[0][5].is_empty && this->board.matrix_pieces[0][6].is_empty){
+
+                  bool status = this->board.make_castling(Type_Castling::Short, this->color_current_player);
+                  if (!status) {
+                      window.pollEvent(event);
+                      return std::nullopt;
+                  }
+
+                  this->draw_board(window, event);
+                  window.display();
+                  window.pollEvent(event);
+
+                  this->change_player();
+
+                  return std::nullopt;
+              }
+          }
+
+          else if (this->color_current_player == Color::Black && !this->board.castling_state.black_king_move && !this->board.castling_state.right_black_rook_move) {
+
+              if (this->board.matrix_pieces[7][5].is_empty && this->board.matrix_pieces[7][6].is_empty){
+
+                  bool status = this->board.make_castling(Type_Castling::Short, this->color_current_player);
+                  if (!status) {
+                      window.pollEvent(event);
+                      return std::nullopt;
+                  }
+
+                  this->draw_board(window, event);
+                  window.display();
+                  window.pollEvent(event);
+
+                  this->change_player();
+
+                  return std::nullopt;
+              }
+          }
+          window.pollEvent(event);
+          return std::nullopt;
+      }
+
+      else if (x >= 0 && x < 8 && y >= 0 && y < 8) {
+          return Coordinates(y, x);
+       }
 
         return std::nullopt;
     }
 
-
-    void draw_board(sf::RenderWindow& window, sf::Event &event) {
+    void draw_board(sf::RenderWindow& window, sf::Event& event) {
         const int windowSize = 640;
         const int tiles = 8;
         const float tileSize = static_cast<float>(windowSize) / tiles;
 
         static sf::Font font;
         font.loadFromFile("assets/DejaVuSans.ttf");
+
+        draw_under_menu(window, font);
 
         sf::RectangleShape square(sf::Vector2f(tileSize-1, tileSize-1));
         square.setOutlineThickness(1.0f);//Чёрные границы разделяющие клетки
@@ -280,16 +377,68 @@ public:
             }
         }
     }
+    void draw_under_menu(sf::RenderWindow& window, static sf::Font& font) { //Отрисовка кнопок для создания 2 рокировок(левая-длинная и правая-короткая)
+    sf::Text text_castling;
+    text_castling.setFont(font);
+    text_castling.setString("Castling:");
+    text_castling.setCharacterSize(20);
+    text_castling.setStyle(sf::Text::Bold);
+    text_castling.setPosition(370, 650);
+
+    sf::Text text_long_castling;
+    text_long_castling.setFont(font);
+    text_long_castling.setString("Long");
+    text_long_castling.setCharacterSize(20);
+    text_long_castling.setStyle(sf::Text::Bold);
+    text_long_castling.setPosition(487, 650);
+
+    sf::Text text_short_castling;
+    text_short_castling.setFont(font);
+    text_short_castling.setString("Short");
+    text_short_castling.setCharacterSize(20);
+    text_short_castling.setStyle(sf::Text::Bold);
+    text_short_castling.setPosition(560, 650);
+
+     sf::RectangleShape upper_line(sf::Vector2f(640, 2));
+     sf::RectangleShape background(sf::Vector2f(640, 48));
+
+     sf::RectangleShape long_castling_button(sf::Vector2f(64, 40));
+     sf::RectangleShape short_castling_button(sf::Vector2f(69, 40));
+
+     upper_line.setPosition(0, 640);
+     upper_line.setFillColor(sf::Color(44, 62, 44));
+
+     background.setPosition(0, 642);
+     background.setFillColor(sf::Color(10, 50, 10));
+
+     long_castling_button.setPosition(480, 645);
+     short_castling_button.setPosition(555, 645);
+
+     long_castling_button.setFillColor(sf::Color(40, 53, 147));
+     short_castling_button.setFillColor(sf::Color(40, 53, 147));
+
+     window.draw(background);
+     window.draw(upper_line);
+
+     window.draw(long_castling_button);
+     window.draw(short_castling_button);
+
+     window.draw(text_castling);
+     window.draw(text_long_castling);
+     window.draw(text_short_castling);
+
+     this->lower_menu_buttons_bounds[Type_Castling::Long] = long_castling_button.getGlobalBounds();
+     this->lower_menu_buttons_bounds[Type_Castling::Short] = short_castling_button.getGlobalBounds();
+    }
 
   
 
     void start_Game() {
         this->color_current_player = Color::White;
         this->first_click = true;
-        this->time_last_click.tv_sec = 0;
         this->textures = getTextures();
 
-        sf::RenderWindow window(sf::VideoMode(640, 640), L"Шахматы", sf::Style::Titlebar | sf::Style::Close);
+        sf::RenderWindow window(sf::VideoMode(640, 690), L"Шахматы", sf::Style::Titlebar | sf::Style::Close);
         window.setFramerateLimit(60);
 
         while (window.isOpen()) {
@@ -322,10 +471,10 @@ public:
                 if (first_click){
                     std::vector<Coordinates> possible_moves;
 
-                    auto cords_click_1 = getClickedCell(event, window, 80);
+                    auto cords_click_1 = getClicked(event, window, 80); //Обработка кликов
 
 
-                    if (!cords_click_1.has_value()) { // Клика не было
+                    if (!cords_click_1.has_value()) { // Клика по клеткам не было или клик по меню
                         continue;
                     }
 
@@ -383,7 +532,7 @@ public:
 
                 }
                 if (!first_click) {
-                    auto cord_click_2 = getClickedCell(event, window, 80);
+                    auto cord_click_2 = getClicked(event, window, 80);
 
                     if (!cord_click_2.has_value()) { // Клика не было
                         continue;
@@ -394,11 +543,18 @@ public:
                     }
 
                     if (is_valid_move(cord_click_2)) {
+                        Piece_Type type_piece = this->board.matrix_pieces[cords_select_piece.y][cords_select_piece.x].piece->get_type();
+                        Color color_piece = this->color_current_player;
+
+                        if (type_piece == Piece_Type::Rook || type_piece == Piece_Type::King) {
+                            this->board.update_state_castling(cords_select_piece);
+                        }
+
                         this->board.move_piece(cords_select_piece, Coordinates(cord_click_2->y, cord_click_2->x));
                         this->first_click = true;
 
-                        if (this->board.matrix_pieces[cord_click_2->y][cord_click_2->x].piece->get_type() == Piece_Type::Pawn) {
-                            if ((this->color_current_player == Color::White && cord_click_2->y == 7) || (this->color_current_player == Color::Black && cord_click_2->y == 0)){
+                        if (type_piece == Piece_Type::Pawn) {
+                            if ((color_piece == Color::White && cord_click_2->y == 7) || (color_piece == Color::Black && cord_click_2->y == 0)){
                                 draw_menu_and_select_type_piece(Coordinates(cord_click_2->y, cord_click_2->x), window, event);
                             }
                         }
