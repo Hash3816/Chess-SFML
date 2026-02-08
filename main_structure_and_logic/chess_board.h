@@ -1,5 +1,5 @@
 #pragma once
-#include "../main_structures_and_logic/cell.h"
+#include "../main_structure_and_logic/cell.h"
 #include "../base_structures/info_move.h"
 #include "../base_structures/castling_info.h"
 

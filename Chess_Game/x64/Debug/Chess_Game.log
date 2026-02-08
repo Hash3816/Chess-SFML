@@ -1,3 +1,83 @@
-﻿  chess_board.cpp
-C:\Users\Dmitry\Desktop\Chess-SFML\main_structures_and_logic\chess_board.cpp(530,1): warning C4715: Chess_Board::is_current_move: значение возвращается не при всех путях выполнения
+﻿  main.cpp
+C:\Users\Dmitry\Desktop\Chess-SFML\main_structure_and_logic\Chess_Game.h(25,69): warning C4042: font: имеет недопустимый класс хранения
+  (компиляция исходного файла "main.cpp")
+  
+  cell.cpp
+  chess_board.cpp
+  Chess_Game.cpp
+C:\Users\Dmitry\Desktop\Chess-SFML\main_structure_and_logic\Chess_Game.h(25,69): warning C4042: font: имеет недопустимый класс хранения
+  (компиляция исходного файла "main_structure_and_logic/Chess_Game.cpp")
+  
+  click_processing.cpp
+C:\Users\Dmitry\Desktop\Chess-SFML\main_structure_and_logic\Chess_Game.h(25,69): warning C4042: font: имеет недопустимый класс хранения
+  (компиляция исходного файла "main_structure_and_logic/click_processing.cpp")
+  
+C:\Users\Dmitry\Desktop\Chess-SFML\main_structure_and_logic\click_processing.cpp(16,92): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+C:\Users\Dmitry\Desktop\Chess-SFML\main_structure_and_logic\click_processing.cpp(16,92): warning C4244:         with
+C:\Users\Dmitry\Desktop\Chess-SFML\main_structure_and_logic\click_processing.cpp(16,92): warning C4244:         [
+C:\Users\Dmitry\Desktop\Chess-SFML\main_structure_and_logic\click_processing.cpp(16,92): warning C4244:             T=float
+C:\Users\Dmitry\Desktop\Chess-SFML\main_structure_and_logic\click_processing.cpp(16,92): warning C4244:         ]
+C:\Users\Dmitry\Desktop\Chess-SFML\main_structure_and_logic\click_processing.cpp(16,71): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+C:\Users\Dmitry\Desktop\Chess-SFML\main_structure_and_logic\click_processing.cpp(16,71): warning C4244:         with
+C:\Users\Dmitry\Desktop\Chess-SFML\main_structure_and_logic\click_processing.cpp(16,71): warning C4244:         [
+C:\Users\Dmitry\Desktop\Chess-SFML\main_structure_and_logic\click_processing.cpp(16,71): warning C4244:             T=float
+C:\Users\Dmitry\Desktop\Chess-SFML\main_structure_and_logic\click_processing.cpp(16,71): warning C4244:         ]
+C:\Users\Dmitry\Desktop\Chess-SFML\main_structure_and_logic\click_processing.cpp(67,93): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+C:\Users\Dmitry\Desktop\Chess-SFML\main_structure_and_logic\click_processing.cpp(67,93): warning C4244:         with
+C:\Users\Dmitry\Desktop\Chess-SFML\main_structure_and_logic\click_processing.cpp(67,93): warning C4244:         [
+C:\Users\Dmitry\Desktop\Chess-SFML\main_structure_and_logic\click_processing.cpp(67,93): warning C4244:             T=float
+C:\Users\Dmitry\Desktop\Chess-SFML\main_structure_and_logic\click_processing.cpp(67,93): warning C4244:         ]
+C:\Users\Dmitry\Desktop\Chess-SFML\main_structure_and_logic\click_processing.cpp(67,72): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+C:\Users\Dmitry\Desktop\Chess-SFML\main_structure_and_logic\click_processing.cpp(67,72): warning C4244:         with
+C:\Users\Dmitry\Desktop\Chess-SFML\main_structure_and_logic\click_processing.cpp(67,72): warning C4244:         [
+C:\Users\Dmitry\Desktop\Chess-SFML\main_structure_and_logic\click_processing.cpp(67,72): warning C4244:             T=float
+C:\Users\Dmitry\Desktop\Chess-SFML\main_structure_and_logic\click_processing.cpp(67,72): warning C4244:         ]
+  pieces.cpp
+  Visualization_Game.cpp
+C:\Users\Dmitry\Desktop\Chess-SFML\main_structure_and_logic\Chess_Game.h(25,69): warning C4042: font: имеет недопустимый класс хранения
+  (компиляция исходного файла "visual_game/Visualization_Game.cpp")
+  
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(180,68): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(180,68): warning C4244:         with
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(180,68): warning C4244:         [
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(180,68): warning C4244:             T=float
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(180,68): warning C4244:         ]
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(180,47): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(180,47): warning C4244:         with
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(180,47): warning C4244:         [
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(180,47): warning C4244:             T=float
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(180,47): warning C4244:         ]
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(186,73): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(186,73): warning C4244:         with
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(186,73): warning C4244:         [
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(186,73): warning C4244:             T=float
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(186,73): warning C4244:         ]
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(186,52): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(186,52): warning C4244:         with
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(186,52): warning C4244:         [
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(186,52): warning C4244:             T=float
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(186,52): warning C4244:         ]
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(192,71): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(192,71): warning C4244:         with
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(192,71): warning C4244:         [
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(192,71): warning C4244:             T=float
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(192,71): warning C4244:         ]
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(192,50): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(192,50): warning C4244:         with
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(192,50): warning C4244:         [
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(192,50): warning C4244:             T=float
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(192,50): warning C4244:         ]
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(197,71): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(197,71): warning C4244:         with
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(197,71): warning C4244:         [
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(197,71): warning C4244:             T=float
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(197,71): warning C4244:         ]
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(197,50): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(197,50): warning C4244:         with
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(197,50): warning C4244:         [
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(197,50): warning C4244:             T=float
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(197,50): warning C4244:         ]
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp(205,71): warning C4042: font: имеет недопустимый класс хранения
+  Создание кода...
+C:\Users\Dmitry\Desktop\Chess-SFML\main_structure_and_logic\chess_board.cpp(530,1): warning C4715: Chess_Board::is_current_move: значение возвращается не при всех путях выполнения
   Chess_Game.vcxproj -> C:\Users\Dmitry\Desktop\Chess-SFML\x64\Debug\Chess_Game.exe

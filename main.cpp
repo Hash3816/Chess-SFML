@@ -1,4 +1,4 @@
-#include "main_structures_and_logic/Chess_Game.h"
+#include "main_structure_and_logic/Chess_Game.h"
 #include <Windows.h>
 
 int main()

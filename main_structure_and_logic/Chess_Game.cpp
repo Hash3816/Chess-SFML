@@ -1,4 +1,4 @@
-#include "../main_structures_and_logic/Chess_Game.h"
+#include "../main_structure_and_logic/Chess_Game.h"
 #include "../visual_game/textures.h"
 
 void Game::start_Game() {

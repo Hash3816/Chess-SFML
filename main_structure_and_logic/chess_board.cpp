@@ -1,5 +1,5 @@
-#include "../main_structures_and_logic/chess_board.h"
-#include "../main_structures_and_logic/pieces.h"
+#include "../main_structure_and_logic/chess_board.h"
+#include "../main_structure_and_logic/pieces.h"
 
 //  онструктор: создаЄм матрицу с базовой расстановкой фигур, и сохран€ем начальные координаты королей
 Chess_Board::Chess_Board() {

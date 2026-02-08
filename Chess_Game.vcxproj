@@ -18,6 +18,29 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="base_structures\castling_info.h" />
+    <ClInclude Include="base_structures\colors.h" />
+    <ClInclude Include="base_structures\coordinates.h" />
+    <ClInclude Include="base_structures\info_move.h" />
+    <ClInclude Include="base_structures\piece_type.h" />
+    <ClInclude Include="main_structure_and_logic\cell.h" />
+    <ClInclude Include="main_structure_and_logic\chess_board.h" />
+    <ClInclude Include="main_structure_and_logic\Chess_Game.h" />
+    <ClInclude Include="main_structure_and_logic\pieces.h" />
+    <ClInclude Include="main_structure_and_logic\virtual_piece.h" />
+    <ClInclude Include="visual_game\textures.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="main_structure_and_logic\cell.cpp" />
+    <ClCompile Include="main_structure_and_logic\chess_board.cpp" />
+    <ClCompile Include="main_structure_and_logic\Chess_Game.cpp" />
+    <ClCompile Include="main_structure_and_logic\click_processing.cpp" />
+    <ClCompile Include="main_structure_and_logic\pieces.cpp" />
+    <ClCompile Include="visual_game\textures.cpp" />
+    <ClCompile Include="visual_game\Visualization_Game.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -127,29 +150,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="main_structures_and_logic\cell.cpp" />
-    <ClCompile Include="main_structures_and_logic\chess_board.cpp" />
-    <ClCompile Include="main_structures_and_logic\Chess_Game.cpp" />
-    <ClCompile Include="main_structures_and_logic\click_processing.cpp" />
-    <ClCompile Include="main_structures_and_logic\pieces.cpp" />
-    <ClCompile Include="visual_game\textures.cpp" />
-    <ClCompile Include="visual_game\Visualization_Game.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="base_structures\castling_info.h" />
-    <ClInclude Include="base_structures\colors.h" />
-    <ClInclude Include="base_structures\coordinates.h" />
-    <ClInclude Include="base_structures\info_move.h" />
-    <ClInclude Include="base_structures\piece_type.h" />
-    <ClInclude Include="main_structures_and_logic\cell.h" />
-    <ClInclude Include="main_structures_and_logic\chess_board.h" />
-    <ClInclude Include="main_structures_and_logic\Chess_Game.h" />
-    <ClInclude Include="main_structures_and_logic\pieces.h" />
-    <ClInclude Include="main_structures_and_logic\virtual_piece.h" />
-    <ClInclude Include="visual_game\textures.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

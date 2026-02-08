@@ -2,7 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include<optional>
 #include <unordered_map>
-#include "../main_structures_and_logic/chess_board.h"
+#include "../main_structure_and_logic/chess_board.h"
 
 class Game {
 private:
