@@ -1,6 +1,5 @@
 #pragma once
-#include "coordinates.h"
-#include "piece_type.h"
+#include "../base_structures/coordinates.h"
 
 class Info_Move {
 public:

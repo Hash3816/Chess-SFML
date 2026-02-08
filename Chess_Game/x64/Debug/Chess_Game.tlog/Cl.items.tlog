@@ -1,4 +1,8 @@
-C:\Users\Dmitry\Desktop\Chess-SFML\cell.cpp;C:\Users\Dmitry\Desktop\Chess-SFML\Chess_Game\x64\Debug\cell.obj
-C:\Users\Dmitry\Desktop\Chess-SFML\chess_board.cpp;C:\Users\Dmitry\Desktop\Chess-SFML\Chess_Game\x64\Debug\chess_board.obj
-C:\Users\Dmitry\Desktop\Chess-SFML\Chess_Game.cpp;C:\Users\Dmitry\Desktop\Chess-SFML\Chess_Game\x64\Debug\Chess_Game.obj
-C:\Users\Dmitry\Desktop\Chess-SFML\pieces.cpp;C:\Users\Dmitry\Desktop\Chess-SFML\Chess_Game\x64\Debug\pieces.obj
+C:\Users\Dmitry\Desktop\Chess-SFML\main.cpp;C:\Users\Dmitry\Desktop\Chess-SFML\Chess_Game\x64\Debug\main.obj
+C:\Users\Dmitry\Desktop\Chess-SFML\main_structures_and_logic\cell.cpp;C:\Users\Dmitry\Desktop\Chess-SFML\Chess_Game\x64\Debug\cell.obj
+C:\Users\Dmitry\Desktop\Chess-SFML\main_structures_and_logic\chess_board.cpp;C:\Users\Dmitry\Desktop\Chess-SFML\Chess_Game\x64\Debug\chess_board.obj
+C:\Users\Dmitry\Desktop\Chess-SFML\main_structures_and_logic\Chess_Game.cpp;C:\Users\Dmitry\Desktop\Chess-SFML\Chess_Game\x64\Debug\Chess_Game.obj
+C:\Users\Dmitry\Desktop\Chess-SFML\main_structures_and_logic\click_processing.cpp;C:\Users\Dmitry\Desktop\Chess-SFML\Chess_Game\x64\Debug\click_processing.obj
+C:\Users\Dmitry\Desktop\Chess-SFML\main_structures_and_logic\pieces.cpp;C:\Users\Dmitry\Desktop\Chess-SFML\Chess_Game\x64\Debug\pieces.obj
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\textures.cpp;C:\Users\Dmitry\Desktop\Chess-SFML\Chess_Game\x64\Debug\textures.obj
+C:\Users\Dmitry\Desktop\Chess-SFML\visual_game\Visualization_Game.cpp;C:\Users\Dmitry\Desktop\Chess-SFML\Chess_Game\x64\Debug\Visualization_Game.obj

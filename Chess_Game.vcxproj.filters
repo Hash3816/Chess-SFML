@@ -15,45 +15,63 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Chess_Game.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="cell.cpp">
+    <ClCompile Include="main_structures_and_logic\cell.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="pieces.cpp">
+    <ClCompile Include="main_structures_and_logic\chess_board.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="chess_board.cpp">
+    <ClCompile Include="main_structures_and_logic\Chess_Game.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="main_structures_and_logic\click_processing.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="main_structures_and_logic\pieces.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="visual_game\textures.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="visual_game\Visualization_Game.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cell.h">
+    <ClInclude Include="base_structures\castling_info.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="chess_board.h">
+    <ClInclude Include="base_structures\colors.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="colors.h">
+    <ClInclude Include="base_structures\coordinates.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="coordinates.h">
+    <ClInclude Include="base_structures\info_move.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="pieces.h">
+    <ClInclude Include="base_structures\piece_type.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="piece.h">
+    <ClInclude Include="main_structures_and_logic\cell.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="piece_type.h">
+    <ClInclude Include="main_structures_and_logic\chess_board.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="info_move.h">
+    <ClInclude Include="main_structures_and_logic\Chess_Game.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="castling_info.h">
+    <ClInclude Include="main_structures_and_logic\pieces.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="main_structures_and_logic\virtual_piece.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="visual_game\textures.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

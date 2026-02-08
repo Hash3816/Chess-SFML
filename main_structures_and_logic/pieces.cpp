@@ -1,5 +1,5 @@
-#include "chess_board.h"
-#include "pieces.h"
+#include "../main_structures_and_logic/chess_board.h"
+#include "../main_structures_and_logic/pieces.h"
 
 
 std::vector<Coordinates> Pawn::get_possible_moves(Chess_Board& board) const{

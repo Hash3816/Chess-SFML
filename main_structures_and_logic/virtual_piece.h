@@ -1,8 +1,8 @@
 #pragma once
 #include <vector>
-#include "coordinates.h"
-#include "piece_type.h"
-#include "colors.h"
+#include "../base_structures/coordinates.h"
+#include "../base_structures/piece_type.h"
+#include "../base_structures/colors.h"
 
 class Chess_Board;
 

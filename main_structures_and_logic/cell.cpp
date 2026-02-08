@@ -1,5 +1,5 @@
-#include "cell.h"
-#include "pieces.h"
+#include "../main_structures_and_logic/cell.h"
+#include "../main_structures_and_logic/pieces.h"
 
 
 

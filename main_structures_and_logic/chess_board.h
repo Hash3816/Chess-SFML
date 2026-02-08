@@ -1,7 +1,7 @@
 #pragma once
-#include "cell.h"
-#include "info_move.h"
-#include "castling_info.h"
+#include "../main_structures_and_logic/cell.h"
+#include "../base_structures/info_move.h"
+#include "../base_structures/castling_info.h"
 
 class Chess_Board {
 public:

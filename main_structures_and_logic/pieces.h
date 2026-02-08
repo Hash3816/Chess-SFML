@@ -1,5 +1,5 @@
 #pragma once
-#include "chess_board.h"
+#include "../main_structures_and_logic/chess_board.h"
 
 class Pawn : public Piece {
 public:
